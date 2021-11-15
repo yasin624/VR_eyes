@@ -1,0 +1,49 @@
+//###############################################   MPU 6050
+#include "MUP.h"
+int x,y,z,e;
+////////////////////////////////////   cs deneme
+int gercek_w=1680,gercek_h=1050;
+int orta_x=gercek_w/2,orta_y=gercek_h/2;
+
+
+
+
+void setup() {  
+initializeIMU();
+Serial.begin(2000000);
+
+
+}
+void loop() {
+  struct Orientation o = getIMUOrientation();
+  ///////////////////////////////////////////////////////////////////değerleri alma
+  e=o.Error;
+  x=o.Roll;
+  y=o.Pitch;
+  z=o.Yaw;
+  
+  /////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////  maplama
+   z=map(z,-180,180,-orta_x,orta_x);
+   y=map(y,-180,180,-orta_y,orta_y);
+   ////////////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////    kutuyu yeniden konumlandırma
+  
+  if (e == 1){
+      Serial.println(" HATA !!!  BAĞLANTILARI KONTROL EDİN ");
+  }
+  
+  else{  ////////////////////////////////////////////////////////////////////////////////////////////////                
+  ////////////////////////////////////////////////////////////   Ardinunio daki değerleri pytona atma
+  Serial.print(e);
+  Serial.print(",");
+  Serial.print(x);
+  Serial.print(",");
+  Serial.print(y);
+  Serial.print(",");
+  Serial.println(z);
+  delay(100);
+
+  }
+  
+}
